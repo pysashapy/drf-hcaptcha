@@ -1,14 +1,11 @@
-# Django REST reCAPTCHA
+# Django REST hCAPTCHA
 
-**Django REST reCAPTCHA v2 and v3 field serializer**
+**Django REST hCAPTCHA v2 and v3 field serializer**
 
-[![CI](https://github.com/llybin/drf-recaptcha/workflows/tests/badge.svg)](https://github.com/llybin/drf-recaptcha/actions)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/a9b44d24cba74c75bca6472b2ee8da67)](https://www.codacy.com/app/llybin/drf-recaptcha?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=llybin/drf-recaptcha&amp;utm_campaign=Badge_Grade)
-[![Codacy Badge](https://api.codacy.com/project/badge/Coverage/a9b44d24cba74c75bca6472b2ee8da67)](https://www.codacy.com/app/llybin/drf-recaptcha?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=llybin/drf-recaptcha&amp;utm_campaign=Badge_Coverage)
+
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-[![PyPI](https://img.shields.io/pypi/v/drf-recaptcha)](https://pypi.org/project/drf-recaptcha/)
-[![PyPI - Downloads](https://img.shields.io/pypi/dm/drf-recaptcha)](https://pypi.org/project/drf-recaptcha/)
-[![PyPI - License](https://img.shields.io/pypi/l/drf-recaptcha)](https://pypi.org/project/drf-recaptcha/)
+[![PyPI](https://img.shields.io/pypi/v/drf-hcaptcha)](https://pypi.org/project/drf-hcaptcha/)
+[![PyPI - Downloads](https://img.shields.io/pypi/dm/drf-hcaptcha)](https://pypi.org/project/drf-hcaptcha/)
 
 ## Requirements
 
@@ -17,129 +14,56 @@
 *   DRF: 3.11, 3.12, 3.13, 3.14
 
 ## Installation
-
-1.  [Sign up for reCAPTCHA](https://www.google.com/recaptcha/)
-2.  Install with `pip install drf-recaptcha`
-3.  Add `"drf_recaptcha"` to your `INSTALLED_APPS` settings.
-4.  Set in settings `DRF_RECAPTCHA_SECRET_KEY`
+1.  Install with `pip install drf-hcaptcha`
+2.  Add `"drf_hcaptcha"` to your `INSTALLED_APPS` settings.
+3.  Set in settings `DRF_HCAPTCHA_SECRET_KEY`
 
 ```python
 INSTALLED_APPS = [
    ...,
-   "drf_recaptcha",
+   "drf_hcaptcha",
    ...,
 ]
 
 ...
 
-DRF_RECAPTCHA_SECRET_KEY = "YOUR SECRET KEY"
+DRF_HCAPTCHA_SECRET_KEY = "YOUR SECRET KEY"
 ```
 
 ## Usage
 
 ```python
-from rest_framework.serializers import Serializer, ModelSerializer
-from drf_recaptcha.fields import ReCaptchaV2Field, ReCaptchaV3Field
-from feedback.models import Feedback
+from rest_framework.serializers import Serializer
+from drf_hcaptcha.fields import HCaptchaV2Field
 
 
 class V2Serializer(Serializer):
-    recaptcha = ReCaptchaV2Field()
+    hcaptcha = HCaptchaV2Field()
     ...
 
-class GetOTPView(APIView):
-    def post(self, request):
-        serializer = V2Serializer(data=request.data, context={"request": request})
-        serializer.is_valid(raise_exception=True)
-        ...
-
-class V3Serializer(Serializer):
-    recaptcha = ReCaptchaV3Field(action="example")
-    ...
-
-class V3WithScoreSerializer(Serializer):
-    recaptcha = ReCaptchaV3Field(
-        action="example",
-        required_score=0.6,
-    )
-    ...
-
-class GetReCaptchaScore(APIView):
-    def post(self, request):
-        serializer = V3WithScoreSerializer(data=request.data, context={"request": request})
-        serializer.is_valid()
-        score = serializer.fields['recaptcha'].score
-        ...
-
-class FeedbackSerializer(ModelSerializer):
-    recaptcha = ReCaptchaV2Field()
-
-    class Meta:
-        model = Feedback
-        fields = ("phone", "full_name", "email", "comment", "recaptcha")
-
-    def validate(self, attrs):
-        attrs.pop("recaptcha")
-        ...
-        return attrs
-
-    
-class DynamicContextSecretKey(APIView):
-    def post(self, request):
-        if request.platform == "android":
-            recaptcha_secret_key = "SPECIAL_FOR_ANDROID"
-        else:
-            recaptcha_secret_key = "SPECIAL_FOR_IOS"
-        serializer = WithReCaptchaSerializer(
-            data=request.data,
-            context={
-                "request": request,
-                "recaptcha_secret_key": recaptcha_secret_key,
-            },
-        )
-        serializer.is_valid(raise_exception=True)
-        ...
-    
-
-class DynamicContextSecretKey(GenericAPIView):
-    serializer_class = WithReCaptchaSerializer
-    
-    def get_serializer_context(self):
-        if self.request.platform == "android":
-            recaptcha_secret_key = "SPECIAL_FOR_ANDROID"
-        else:
-            recaptcha_secret_key = "SPECIAL_FOR_IOS"
-        context = super().get_serializer_context()
-        context.update({"recaptcha_secret_key": recaptcha_secret_key})
-        return context
-    
-
-class MobileSerializer(Serializer):
-    recaptcha = ReCaptchaV3Field(secret_key="")
-    ...
 ```
 
 ## Settings
 
-`DRF_RECAPTCHA_SECRET_KEY` - set your Google reCAPTCHA secret key. Type: str.
+`DRF_HCAPTCHA_SECRET_KEY` - set your Google hCAPTCHA secret key. Type: str.
 
-`DRF_RECAPTCHA_DEFAULT_V3_SCORE` - by default: `0.5`. Type: float.
+`DRF_HCAPTCHA_DEFAULT_V3_SCORE` - by default: `0.5`. Type: float.
 
-`DRF_RECAPTCHA_ACTION_V3_SCORES` - by default: `{}`. Type: dict. You can define specific score for each action e.g. `{"login": 0.6, "feedback": 0.3}`
+`DRF_HCAPTCHA_ACTION_V3_SCORES` - by default: `{}`. Type: dict. You can define specific score for each action e.g. `{"login": 0.6, "feedback": 0.3}`
 
-`DRF_RECAPTCHA_DOMAIN` - by default: `www.google.com`. Type: str.
+`DRF_HCAPTCHA_DOMAIN` - by default: `www.google.com`. Type: str.
 
-`DRF_RECAPTCHA_PROXY` - by default: `{}`. Type: dict. e.g. `{'http': 'http://127.0.0.1:8000', 'https': 'https://127.0.0.1:8000'}`
+`DRF_HCAPTCHA_PROXY` - by default: `{}`. Type: dict. e.g. `{'http': 'http://127.0.0.1:8000', 'https': 'https://127.0.0.1:8000'}`
 
-`DRF_RECAPTCHA_VERIFY_REQUEST_TIMEOUT` - by default: `10`. Type: int.
+`DRF_HCAPTCHA_VERIFY_REQUEST_TIMEOUT` - by default: `10`. Type: int.
 
 ### Priority of secret_key value
 
-1.  settings `DRF_RECAPTCHA_SECRET_KEY`
+1.  settings `DRF_HCAPTCHA_SECRET_KEY`
 2.  the argument `secret_key` of field
-3.  request.context["recaptcha_secret_key"]
+3.  request.context["hcaptcha_secret_key"]
 
-## reCAPTCHA v3
+## hCAPTCHA v3
 
 Validation is passed if the score value returned by Google is greater than or equal to required score.
 
@@ -149,21 +73,7 @@ Required score value: `0.0 - 1.0`
 
 If not defined or zero in current item then value from next item.
 
-1.  Value for action in settings `DRF_RECAPTCHA_ACTION_V3_SCORES`
+1.  Value for action in settings `DRF_HCAPTCHA_ACTION_V3_SCORES`
 2.  Value in argument `required_score` of field
-3.  Default value in settings `DRF_RECAPTCHA_DEFAULT_V3_SCORE`
+3.  Default value in settings `DRF_HCAPTCHA_DEFAULT_V3_SCORE`
 4.  Default value `0.5`
-
-## Testing
-
-Set `DRF_RECAPTCHA_TESTING=True` in settings, no request to Google, no warnings, `DRF_RECAPTCHA_SECRET_KEY` is not required, set returning verification result in setting below.
-
-`DRF_RECAPTCHA_TESTING_PASS=True|False` - all responses are pass, default `True`.
-
-Use `from django.test import override_settings`
-
-## Credits
-
-[django-recaptcha](https://github.com/praekelt/django-recaptcha)
-
-reCAPTCHA copyright 2012 Google.

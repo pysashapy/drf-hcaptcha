@@ -6,15 +6,15 @@ def read(f):
 
 
 setup(
-    name="drf-recaptcha",
-    version="3.0.0",
-    description="Django rest framework recaptcha field serializer.",
+    name="drf-hcaptcha",
+    version="1.0.0",
+    description="Django rest framework hcaptcha field serializer.",
     long_description=read("README.md"),
     long_description_content_type="text/markdown",
-    author="Lev Lybin",
-    author_email="lev.lybin@gmail.com",
+    author="Alexander I",
+    author_email="sasha.2000ibr@gmail.com",
     license="MIT",
-    url="https://github.com/llybin/drf-recaptcha",
+    url="https://github.com/pysashapy/drf-hcaptcha",
     packages=find_packages(exclude=["tests*"]),
     install_requires=[
         "django>=3.2",
@@ -31,9 +31,9 @@ setup(
         "drf",
         "rest",
         "django-rest-framework",
-        "reCAPTCHA",
-        "reCAPTCHA v2",
-        "reCAPTCHA v3",
+        "hCAPTCHA",
+        "hCAPTCHA v2",
+        "hCAPTCHA v3",
     ],
     classifiers=[
         "Development Status :: 5 - Production/Stable",
