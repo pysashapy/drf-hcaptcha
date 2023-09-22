@@ -45,13 +45,13 @@ class V2Serializer(Serializer):
 
 ## Settings
 
-`DRF_HCAPTCHA_SECRET_KEY` - set your Google hCAPTCHA secret key. Type: str.
+`DRF_HCAPTCHA_SECRET_KEY` - set your hCAPTCHA secret key. Type: str.
 
 `DRF_HCAPTCHA_DEFAULT_V3_SCORE` - by default: `0.5`. Type: float.
 
 `DRF_HCAPTCHA_ACTION_V3_SCORES` - by default: `{}`. Type: dict. You can define specific score for each action e.g. `{"login": 0.6, "feedback": 0.3}`
 
-`DRF_HCAPTCHA_DOMAIN` - by default: `www.google.com`. Type: str.
+`DRF_HCAPTCHA_DOMAIN` - by default: `api.hcaptcha.com`. Type: str.
 
 `DRF_HCAPTCHA_PROXY` - by default: `{}`. Type: dict. e.g. `{'http': 'http://127.0.0.1:8000', 'https': 'https://127.0.0.1:8000'}`
 
