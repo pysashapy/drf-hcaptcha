@@ -7,7 +7,7 @@ def read(f):
 
 setup(
     name="drf-hcaptcha",
-    version="1.0.0",
+    version="1.0.1",
     description="Django rest framework hcaptcha field serializer.",
     long_description=read("README.md"),
     long_description_content_type="text/markdown",
@@ -17,7 +17,7 @@ setup(
     url="https://github.com/pysashapy/drf-hcaptcha",
     packages=find_packages(exclude=["tests*"]),
     install_requires=[
-        "django>=3.2",
+        "django>=3.1",
         "djangorestframework>=3.11",
         "django-ipware>=2.1",
     ],
@@ -41,7 +41,7 @@ setup(
         "Environment :: Plugins",
         "Intended Audience :: Developers",
         "Framework :: Django",
-        "Framework :: Django :: 3.2",
+        "Framework :: Django :: 3.1",
         "Framework :: Django :: 4.0",
         "Framework :: Django :: 4.1",
         "Framework :: Django :: 4.2",
